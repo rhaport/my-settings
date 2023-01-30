@@ -1,0 +1,48 @@
+# This is Git's per-user configuration file.
+[user]
+  name = rhaport
+  email = 
+
+[core]
+  editor = vim
+  autocrlf = input
+
+[diff]
+  tool = bcompare
+	submodule = log
+
+[merge]
+  tool = bcompare
+
+[difftool "bcompare"]
+  cmd = "bcompare \"$LOCAL\" \"$REMOTE\""
+
+[mergetool "bcompare"]
+  cmd = "bcompare \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\""
+
+[alias]
+  br = branch
+  co = checkout
+  ci = commit
+  cim = commit -m
+  hist = log --graph --date=relative --pretty=tformat:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ad)%Creset' -35
+  t = tag -l
+  st = status
+	spull = !git pull && git submodule sync --recursive && git submodule update --init --recursive
+	spush = push --recurse-submodules=on-demand
+
+
+[difftool]
+  prompt = false
+
+[credential]
+  helper = cache --timeout 360000
+
+[pull]
+	rebase = true
+  
+[protocol "file"]
+	allow = always
+  
+[status]
+	submoduleSummary = true
