@@ -1,0 +1,57 @@
+# include this file into ~/.bashrc or ~/.profile
+#
+# if [ -f ~/.bashrc.private ]; then
+#    . ~/.bashrc.private
+# fi
+#
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+
+parse_git_branch()
+{
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+gg()
+{
+  target="$1"
+  expression="$2"
+  args="-nr"
+
+  if test "$#" -eq 1; then
+    expression=$1
+  fi
+
+  if test "$#" -ge 3; then
+    args="${args} $3"
+  fi
+
+  case "$target" in
+    "cpp")
+      pattern="--include=*.cpp --include=*.h"
+      ;;
+    "cmake")
+      pattern="--include=*.cmake --include=CMakeLists.txt --include=*.yml"
+      ;;
+    "all"|*)
+      pattern=""
+      ;;
+  esac
+  grep $args "${expression}" . ${pattern}
+}
+
+export PS1="\[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\]\n$ "
